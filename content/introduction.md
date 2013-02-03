@@ -13,4 +13,4 @@ Over the last few years I have engaged in a number of extra-curricular activitie
 
 # What to expect #
 
-As a self professed serial hobbyist you can expect that the topics I blog about will be as diverse as they are - hopefully, interesting.  For the most part they will involve topics related to programming, security, data analysis, algorithms, arduino and many others.
+As a self-professed serial hobbyist you can expect that the topics I blog about will be as diverse as they are - hopefully, interesting.  For the most part they will involve topics related to programming, security, data analysis, algorithms, arduino and many others.
