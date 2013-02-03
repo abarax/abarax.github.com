@@ -1,5 +1,5 @@
 Date: 2013-01-22
-Title: PUSH EBP  MOV EBP,ESP
+Title: PUSH EBP  MOV ESP,EBP
 Category: Blog
 Tags: blogging
 
