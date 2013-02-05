@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- #
 
 AUTHOR = u'Leigh'
-SITENAME = u'JasperVine'
+SITENAME = u'Leigh Appel'
 SITEURL = ''
 
 TIMEZONE = 'Europe/Paris'
