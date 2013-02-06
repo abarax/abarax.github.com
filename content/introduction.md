@@ -1,5 +1,5 @@
 Date: 2013-01-22
-Title: PUSH EBP  MOV ESP, EBP
+Title: PUSH EBP  MOV EBP, ESP
 Category: Blog
 Tags: blogging
 
@@ -18,7 +18,7 @@ As a self-professed serial hobbyist you can expect that the topics I blog about 
 Without further adieu, I thought I'd leave you with a morsel of knowledge I have picked up during the last year, that might help beginners. A topic I have been researching heavily lately is that of Information Security. Specifically, I have been researching reverse engineering, malware analysis and software exploitation.  You may have noticed the title of this introductory blog post looks a bit strange: 
 
 	push ebp
-	mov  esp, ebp
+	mov  ebp, esp
 
 It looks strange because it is a snippet of Assembly language, but not just any Assembly language, it is the standard entrance for a function that many compilers will generate. This is useful knowledge when using an assembler debugger such as OllyDbg, WinDbg or GDB to identify program or function entry points.
 
@@ -33,7 +33,7 @@ will begin with the following Assembly code:
 
 	_foo
 	  push ebp
-	  mov  esp, ebp
+	  mov  ebp, esp
 	  sub  esp, 0x4
 
 _note: The sub esp, 0x4 line will allocate space on the stack for the 'bar' variable._
@@ -43,7 +43,7 @@ This piece of assembly follows the form _opcode destination, source_
 One of the things that can be confusing with this concept, is this will not always be the case. Depending on your operating system, the architecture, the compiler used and even the flags passed in to the compiler, the Assembly code be different. For example:
 
 	push %ebp
-	move %ebp, %esp
+	mov  %esp, %ebp
 	sub  0x04, %esp
 
 This is typical of the AT&T syntax used in GNU AS and will be used on Unix-like systems. It follows the format _opcode source, destination_

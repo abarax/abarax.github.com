@@ -30,7 +30,7 @@
 
                             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../push-ebp-mov-esp-ebp.html">PUSH EBP  MOV ESP, EBP</a></h1> 
+                    <h1 class="entry-title"><a href="../push-ebp-mov-ebp-esp.html">PUSH EBP  MOV EBP, ESP</a></h1> 
                     <footer class="post-info">
         <abbr class="published" title="2013-01-22T00:00:00">
                 Tue 22 January 2013
@@ -49,7 +49,7 @@
 <p>As a self-professed serial hobbyist you can expect that the topics I blog about will be as diverse as they are - hopefully, interesting.  For the most part they will involve topics related to programming, security, data analysis, algorithms, arduino and many others.</p>
 <p>Without further adieu, I thought I'd leave you with a morsel of knowledge I have picked up during the last year, that might help beginners. A topic I have been researching heavily lately is that of Information Security. Specifically, I have been researching reverse engineering, malware analysis and software exploitation.  You may have noticed the title of this introductory blog post looks a bit strange: </p>
 <div class="codehilite"><pre><span class="n">push</span> <span class="n">ebp</span>
-<span class="n">mov</span>  <span class="n">esp</span><span class="p">,</span> <span class="n">ebp</span>
+<span class="n">mov</span>  <span class="n">ebp</span><span class="p">,</span> <span class="n">esp</span>
 </pre></div>
 
 
@@ -65,7 +65,7 @@
 <p>will begin with the following Assembly code:</p>
 <div class="codehilite"><pre><span class="n">_foo</span>
   <span class="n">push</span> <span class="n">ebp</span>
-  <span class="n">mov</span>  <span class="n">esp</span><span class="p">,</span> <span class="n">ebp</span>
+  <span class="n">mov</span>  <span class="n">ebp</span><span class="p">,</span> <span class="n">esp</span>
   <span class="n">sub</span>  <span class="n">esp</span><span class="p">,</span> <span class="mh">0x4</span>
 </pre></div>
 
@@ -74,7 +74,7 @@
 <p>This piece of assembly follows the form <em>opcode destination, source</em></p>
 <p>One of the things that can be confusing with this concept, is this will not always be the case. Depending on your operating system, the architecture, the compiler used and even the flags passed in to the compiler, the Assembly code be different. For example:</p>
 <div class="codehilite"><pre><span class="n">push</span> <span class="o">%</span><span class="n">ebp</span>
-<span class="n">move</span> <span class="o">%</span><span class="n">ebp</span><span class="p">,</span> <span class="o">%</span><span class="n">esp</span>
+<span class="n">mov</span>  <span class="o">%</span><span class="n">esp</span><span class="p">,</span> <span class="o">%</span><span class="n">ebp</span>
 <span class="n">sub</span>  <span class="mh">0x04</span><span class="p">,</span> <span class="o">%</span><span class="n">esp</span>
 </pre></div>
 
