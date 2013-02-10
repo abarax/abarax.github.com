@@ -7,7 +7,9 @@ Tags: Security, DFIR
 
 DFIR I hear you say? What on earth is it I hear you say? 
 
-DFIR stands for 'Digital Forensics and Incident Response'. It is a subset of the IT Security discipline and deals mostly with the analysis of attacks by malware or hackers after the fact. It uses a number of different techniques, including pcap analysis, file system log analysis and any change or impact on the target operating system and network.
+DFIR stands for 'Digital Forensics and Incident Response'. It is a subset of the IT Security discipline that deals mostly with the analysis of attacks by malware or hackers after the fact. It uses a number of different techniques and tools including pcap analysis, file system log analysis and any change or impact on the target operating system and network. Although there are too many tools to name in DFIR trade, the ones I will be exploring mostly in this pose are Wireshark, Volatility, Strings and Foremost.
+
+So how did we get here?
 
 Due to my recent interest in all things security I was testing a very popular memory analysis framework called 'Volatility'.  Volatility is an open source memory analysis tool written in Python and you can check it out [here](http://code.google.com/p/volatility). While checking out the project I discovered some sample memory images for testing the tool.  One in particular caught my eye, the [GrrCon forensic challenge ISO](http://t.co/m0JCvrnV).
 
