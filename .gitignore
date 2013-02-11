@@ -1,0 +1,4 @@
+# Gitignore file for abarax.github.com
+
+# Stop commiting VIM swap files
+*.swp
