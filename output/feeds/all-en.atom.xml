@@ -38,7 +38,58 @@
 
 
 &lt;p&gt;This is typical of the AT&amp;amp;T syntax used in GNU AS and will be used on Unix-like systems. It follows the format &lt;em&gt;opcode source, destination&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;An absolutely amazing resource for more information about this (and much more) is located in this free &lt;a href="https://en.wikibooks.org/wiki/X86_Disassembly/Functions_and_Stack_Frames"&gt;wiki book&lt;/a&gt;&lt;/p&gt;</summary><category term="blogging"></category></entry><entry><title>GRR Con 2012 DFIR Challenge Part One (draft)</title><link href="/grr-con-2012-dfir-challenge-part-one-draft.html" rel="alternate"></link><updated>2012-01-25T00:00:00+10:00</updated><author><name>Leigh</name></author><id>tag:,2012-01-25:grr-con-2012-dfir-challenge-part-one-draft.html</id><summary type="html">&lt;p&gt;DFIR I hear you say? What on earth is it I hear you say? &lt;/p&gt;
+&lt;p&gt;An absolutely amazing resource for more information about this (and much more) is located in this free &lt;a href="https://en.wikibooks.org/wiki/X86_Disassembly/Functions_and_Stack_Frames"&gt;wiki book&lt;/a&gt;&lt;/p&gt;</summary><category term="blogging"></category></entry><entry><title>GSS Con 2012 DFIR Challenge Part Two</title><link href="/gss-con-2012-dfir-challenge-part-two.html" rel="alternate"></link><updated>2012-01-26T00:00:00+10:00</updated><author><name>Leigh</name></author><id>tag:,2012-01-26:gss-con-2012-dfir-challenge-part-two.html</id><summary type="html">&lt;p&gt;Lets jump straight in an pick up where we left off with question six.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Question 6. What is the mutex the backdoor is using?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;First of all, what is a mutex? If you have had any computer science or programming experience you may have heard about a mutex. Mutex stands for mutual exclusion and in the context of malware or executables in general it is a mechanism for ensuring that only one version of the program can be running at once.&lt;/p&gt;
+&lt;p&gt;Since the entire point of doing this challenge was to learn about the volatility framework lets attempt to use that to solve this question.  The docs for &lt;a href="https://code.google.com/p/volatility/wiki/CommandReference22"&gt;Volatility&lt;/a&gt; are quite well written, doing a quick find on the page for 'mutex' points us in the direction of the 'handles' command and the 'mutantscan' command.&lt;/p&gt;
+&lt;p&gt;Running the command:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;vol&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="n"&gt;memdump&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="n"&gt;mutantscan&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;silent&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This shows up a number of mutants which is going to be hard to sift through. I could google the name of each one to figure out where it came from.  Lets try the other command:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;vol&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="n"&gt;memdump&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="n"&gt;handles&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="n"&gt;Mutant&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There are too many entries here to filter down as well.  But this command does provide process ID's so they key will be determining which process the malware is running in.&lt;/p&gt;
+&lt;p&gt;Lets have a look at some other Volatility commands and see if we can't determine which one is hosting the malware. Browsing through the numerous commands and taking in to account the information we already know about. We do know the command and control server IP and there is a command under the networking category called 'connections'. Lets try that.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;vol&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="n"&gt;memdump&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="n"&gt;connections&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This results in the following:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt; Offset(V)  Local Address             Remote Address            Pid  
+---------- ------------------------- ------------------------- ------
+0x8201ce68 172.16.150.20:1365        172.16.150.10:139              4
+0x82018e00 172.16.150.20:1424        221.54.197.32:443           1096
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This at least lets us know the process id that the malware is hiding in. Lets check out what process that is by running the 'pslist' command.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;vol&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="n"&gt;memdump&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="n"&gt;pslist&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="mi"&gt;1096&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It's 'explorer.exe'!! Lets use that to filter out one of the other commands to find the mutex. The -p flag will filter the handles command by process id.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="n"&gt;vol&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="n"&gt;memdump&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="n"&gt;handles&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="n"&gt;Mutant&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="mi"&gt;1096&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This reduces our list considerably, 13 in fact. A quick google of each of these reveals that the malware is using the mutant &lt;strong&gt;')!VoqA.I4'&lt;/strong&gt;. Looking over the google results, I realise I could have just googled the malware 'poison ivy' to determine this fact.  Fortunately for us we garnered a lot of new information during this process.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Question 7. Where is the backdoor placed on the filesystem?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This one sounds tricky. We have a pcap, a memory image and a file system timeline. I would say the whereabouts of the backdoor will either be in the memory image or the file system timeline.&lt;/p&gt;
+&lt;p&gt;Looking through the Volatility command docs I don't see much I can use to find this, I tried memdumpand handles to no avail. Lets try the memory image. I got stuck here for a while, a grep for the swing-mechanics doc showed up nothing until I used the -i flag to make the search case insensitive. Looking below this entry I noticed something strange a file called svchosts.exe. &lt;/p&gt;
+&lt;p&gt;After staring at the pslists and psscans for a while this stuck out because the file listed in all those process commands is called 'svchost.exe', in fact googling for 'svchosts.exe' refusing to show results for anything but 'svchost'. What confirms it for sure though is the 'Entry Type' column of the compromised.timeline. It reads 'm..b' which means that the file was both born and modified at this time, a little strange for what is a windows system process which should have been born when the OS was installed.&lt;/p&gt;
+&lt;p&gt;After this I see a lot of network related utilities being used which does seem odd. Finally after this a directory called 'c:/WINDOWS/system32/systems' is created and a total of four .exe files are created and added to this directory.&lt;/p&gt;
+&lt;p&gt;Hopefully this is enough to answer question 7.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Question 8. What process name and process id is the backdoor running in?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Luckily we found this out earlier when determining the mutex.  We used the Volatility tool to uncover this and the answer is 'explorer.exe' and 1096.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Question 9. What additional tools do you believe were placed on the machine?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I believe the answer to this I determined in question 7. The addintional tools were 'g.exe', 'p.exe', 'r.exe' and 'sysmon.exe'.  To determine exactly what these tools do would require further analysis my hunch is copies of the malware itself. This could be confirmed using hashes but we need a way to get the files.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Question 10. What directory was created to place the newly dropped tools?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;We also found this our earlier, it is 'c:/WINDOWS/system32/systems'&lt;/p&gt;
+&lt;p&gt;Well we have made it to the half way point, stay tuned for the next installment.&lt;/p&gt;</summary><category term="Security"></category><category term="DFIR"></category><category term="Wireshark"></category></entry><entry><title>GRR Con 2012 DFIR Challenge Part One</title><link href="/grr-con-2012-dfir-challenge-part-one.html" rel="alternate"></link><updated>2012-01-25T00:00:00+10:00</updated><author><name>Leigh</name></author><id>tag:,2012-01-25:grr-con-2012-dfir-challenge-part-one.html</id><summary type="html">&lt;p&gt;DFIR I hear you say? What on earth is it I hear you say? &lt;/p&gt;
 &lt;p&gt;DFIR stands for 'Digital Forensics and Incident Response'. It is a subset of the IT Security discipline that deals mostly with the analysis of attacks by malware or hackers after the fact. It uses a number of different techniques and tools including pcap analysis, file system log analysis and any change or impact on the target operating system and network. Although there are too many tools to name in DFIR trade, the ones I will be exploring mostly in this pose are Wireshark, Volatility, Strings and Foremost.&lt;/p&gt;
 &lt;p&gt;So how did we get here?&lt;/p&gt;
 &lt;p&gt;Due to my recent interest in all things security I was testing a very popular memory analysis framework called 'Volatility'.  Volatility is an open source memory analysis tool written in Python and you can check it out &lt;a href="http://code.google.com/p/volatility"&gt;here&lt;/a&gt;. While checking out the project I discovered some sample memory images for testing the tool.  One in particular caught my eye, the &lt;a href="http://t.co/m0JCvrnV"&gt;GrrCon forensic challenge ISO&lt;/a&gt;.&lt;/p&gt;
@@ -71,18 +122,19 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;strong&gt;Question 3. What was that name of the file that dropped the backdoor?&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;We have already uncovered this above it was swing-mechanics.doc.exe&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Question 3. What was the name of the file that dropped the backdoor?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;We have already uncovered this above. The filename was swing-mechanics.doc.exe&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Question 4. What is the IP address of the C2 server?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;First of all, what is a C2 server? A C2 server is a command and control server that malware uses to take directives and report information. Probably the best way to determine this is to browse the pcap log in wireshark around the time that the malware was delivered.&lt;/p&gt;
 &lt;p&gt;Previous to the file being delivered to the system only two IP's are mentioned 172.16.150.20 and 66.32.119.38 and after the file was delivered a new TCP connection was made to this address 221.54.197.32 This is likely our C2.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Question 5. What type of backdoor is installed?&lt;/strong&gt; &lt;/p&gt;
 &lt;p&gt;When I first looked at this I thought the best approach would be to pull out the exe from the pcap file using Wireshark. &lt;/p&gt;
 &lt;p&gt;You can do this by right clicking on the HTTP GET for the swing-mechanics.exe and selecting follow TCP Stream. This will bring up a dialog box displaying the HTTP conversation between the clinet and the server. Since the client is the victim, we are only interested in what the server sent us (the malware itself). We can filter out the client traffic by selecting from the drop down box just the information from the server.&lt;/p&gt;
-&lt;p&gt;Once this is done select 'RAW' as the format and hit 'Save As', I saved mine as 'malware.raw'. This will save just the data that came from the server i.e. swing-mechanics.exe. note: When you look at the raw data you can also see the famous 'MZ' signifying the start of a .exe file.  &lt;/p&gt;
-&lt;p&gt;This file still includes a lot of the HTTP protocol information, in order to extract the exe from this file we can use a tool called 'foremost'. Foremost is a tool which was designed to extract certain file types from binary blobs of data. In this case it is an exe but it could also be something else, check the man pages for more details. To do this, run this command:&lt;/p&gt;
+&lt;p&gt;Once this is done select 'RAW' as the format and hit 'Save As'. I saved mine as 'malware.raw'. This will save just the data that came from the server i.e. swing-mechanics.doc.exe. note: When you look at the raw data you can also see the famous 'MZ' signifying the start of a .exe file.  &lt;/p&gt;
+&lt;p&gt;This binary file still includes a lot of the HTTP protocol information, in order to extract the exe from this file we can use a tool called 'foremost'. Foremost is a tool which was designed to extract certain file types from binary blobs of data. In this case it is an exe but it could also be something else, check the man pages for more details. To do this, run this command:&lt;/p&gt;
 &lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;foremost&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="n"&gt;exe&lt;/span&gt; &lt;span class="n"&gt;malware&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;raw&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Even though we now have the file, I still want to learn the use of the Volatility tool so lets try that out.&lt;/p&gt;</summary><category term="Security"></category><category term="DFIR"></category></entry></feed>
+&lt;p&gt;Now that we have the exe we can run it through a malware analysis program. Lets use &lt;a href="www.virustotal.com"&gt;Virus Total&lt;/a&gt; a free online virus analyzer.  The site seems to have determined it to be &lt;strong&gt;Poisonivy&lt;/strong&gt; or some variant.&lt;/p&gt;
+&lt;p&gt;In the interest of keeping these posts digestible, I'll stick to five questions per post. We'll pick up with question six in the next post.&lt;/p&gt;</summary><category term="Security"></category><category term="DFIR"></category></entry></feed>

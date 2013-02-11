@@ -31,7 +31,7 @@
 
                             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../grr-con-2012-dfir-challenge-part-one-draft.html">GRR Con 2012 DFIR Challenge Part One (draft)</a></h1> 
+                    <h1 class="entry-title"><a href="../grr-con-2012-dfir-challenge-part-one.html">GRR Con 2012 DFIR Challenge Part One</a></h1> 
                     <footer class="post-info">
         <abbr class="published" title="2012-01-25T00:00:00">
                 Wed 25 January 2012
@@ -75,27 +75,54 @@
 </pre></div>
 
 
-<p><strong>Question 3. What was that name of the file that dropped the backdoor?</strong></p>
-<p>We have already uncovered this above it was swing-mechanics.doc.exe</p>
+<p><strong>Question 3. What was the name of the file that dropped the backdoor?</strong></p>
+<p>We have already uncovered this above. The filename was swing-mechanics.doc.exe</p>
 <p><strong>Question 4. What is the IP address of the C2 server?</strong></p>
 <p>First of all, what is a C2 server? A C2 server is a command and control server that malware uses to take directives and report information. Probably the best way to determine this is to browse the pcap log in wireshark around the time that the malware was delivered.</p>
 <p>Previous to the file being delivered to the system only two IP's are mentioned 172.16.150.20 and 66.32.119.38 and after the file was delivered a new TCP connection was made to this address 221.54.197.32 This is likely our C2.</p>
 <p><strong>Question 5. What type of backdoor is installed?</strong> </p>
 <p>When I first looked at this I thought the best approach would be to pull out the exe from the pcap file using Wireshark. </p>
 <p>You can do this by right clicking on the HTTP GET for the swing-mechanics.exe and selecting follow TCP Stream. This will bring up a dialog box displaying the HTTP conversation between the clinet and the server. Since the client is the victim, we are only interested in what the server sent us (the malware itself). We can filter out the client traffic by selecting from the drop down box just the information from the server.</p>
-<p>Once this is done select 'RAW' as the format and hit 'Save As', I saved mine as 'malware.raw'. This will save just the data that came from the server i.e. swing-mechanics.exe. note: When you look at the raw data you can also see the famous 'MZ' signifying the start of a .exe file.  </p>
-<p>This file still includes a lot of the HTTP protocol information, in order to extract the exe from this file we can use a tool called 'foremost'. Foremost is a tool which was designed to extract certain file types from binary blobs of data. In this case it is an exe but it could also be something else, check the man pages for more details. To do this, run this command:</p>
+<p>Once this is done select 'RAW' as the format and hit 'Save As'. I saved mine as 'malware.raw'. This will save just the data that came from the server i.e. swing-mechanics.doc.exe. note: When you look at the raw data you can also see the famous 'MZ' signifying the start of a .exe file.  </p>
+<p>This binary file still includes a lot of the HTTP protocol information, in order to extract the exe from this file we can use a tool called 'foremost'. Foremost is a tool which was designed to extract certain file types from binary blobs of data. In this case it is an exe but it could also be something else, check the man pages for more details. To do this, run this command:</p>
 <div class="codehilite"><pre><span class="o">&gt;</span><span class="n">foremost</span> <span class="o">-</span><span class="n">t</span> <span class="n">exe</span> <span class="n">malware</span><span class="p">.</span><span class="n">raw</span>
 </pre></div>
 
 
-<p>Even though we now have the file, I still want to learn the use of the Volatility tool so lets try that out.</p>                </article>
+<p>Now that we have the exe we can run it through a malware analysis program. Lets use <a href="www.virustotal.com">Virus Total</a> a free online virus analyzer.  The site seems to have determined it to be <strong>Poisonivy</strong> or some variant.</p>
+<p>In the interest of keeping these posts digestible, I'll stick to five questions per post. We'll pick up with question six in the next post.</p>                </article>
                             </aside><!-- /#featured -->
                             <section id="content" class="body">
                     <h1>Other articles</h1>
                     <hr />
                     <ol id="posts-list" class="hfeed">
                                                 
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="../gss-con-2012-dfir-challenge-part-two.html" rel="bookmark"
+                           title="Permalink to GSS Con 2012 DFIR Challenge Part Two">GSS Con 2012 DFIR Challenge Part Two</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2012-01-26T00:00:00">
+                Thu 26 January 2012
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/leigh.html">Leigh</a>
+        </address>
+        <p>In <a href="../category/security.html">Security</a>. </p>
+<p>tags: <a href="../tag/security.html">Security</a><a href="../tag/dfir.html">DFIR</a><a href="../tag/wireshark.html">Wireshark</a></p>
+</footer><!-- /.post-info -->                <p>Lets jump straight in an pick up where we left off with question six.</p>
+<p><strong>Question 6. What is the mutex the backdoor is using?</strong></p>
+<p>First of all, what is a mutex? If you have had any computer science or programming experience you may have heard about a mutex. Mutex stands ...</p>
+                <a class="readmore" href="../gss-con-2012-dfir-challenge-part-two.html">read more</a>
+                                </div><!-- /.entry-content -->
+            </article></li>
+                            
 
                  
                         <li><article class="hentry">    

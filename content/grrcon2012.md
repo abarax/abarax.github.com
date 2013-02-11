@@ -1,5 +1,5 @@
 Date: 2012-01-25
-Title: GRR Con 2012 DFIR Challenge Part One (draft)
+Title: GRR Con 2012 DFIR Challenge Part One
 Category: Security
 Tags: Security, DFIR
 
@@ -44,9 +44,9 @@ Doing this brings up the full packet details and checking the packet arrival tim
 
 	APR 28, 2012 12:00:59.2562
 
-**Question 3. What was that name of the file that dropped the backdoor?**
+**Question 3. What was the name of the file that dropped the backdoor?**
 
-We have already uncovered this above it was swing-mechanics.doc.exe
+We have already uncovered this above. The filename was swing-mechanics.doc.exe
 
 **Question 4. What is the IP address of the C2 server?**
 
@@ -60,10 +60,12 @@ When I first looked at this I thought the best approach would be to pull out the
 
 You can do this by right clicking on the HTTP GET for the swing-mechanics.exe and selecting follow TCP Stream. This will bring up a dialog box displaying the HTTP conversation between the clinet and the server. Since the client is the victim, we are only interested in what the server sent us (the malware itself). We can filter out the client traffic by selecting from the drop down box just the information from the server.
 
-Once this is done select 'RAW' as the format and hit 'Save As', I saved mine as 'malware.raw'. This will save just the data that came from the server i.e. swing-mechanics.exe. note: When you look at the raw data you can also see the famous 'MZ' signifying the start of a .exe file.  
+Once this is done select 'RAW' as the format and hit 'Save As'. I saved mine as 'malware.raw'. This will save just the data that came from the server i.e. swing-mechanics.doc.exe. note: When you look at the raw data you can also see the famous 'MZ' signifying the start of a .exe file.  
 
-This file still includes a lot of the HTTP protocol information, in order to extract the exe from this file we can use a tool called 'foremost'. Foremost is a tool which was designed to extract certain file types from binary blobs of data. In this case it is an exe but it could also be something else, check the man pages for more details. To do this, run this command:
+This binary file still includes a lot of the HTTP protocol information, in order to extract the exe from this file we can use a tool called 'foremost'. Foremost is a tool which was designed to extract certain file types from binary blobs of data. In this case it is an exe but it could also be something else, check the man pages for more details. To do this, run this command:
 	
 	>foremost -t exe malware.raw
 
-Even though we now have the file, I still want to learn the use of the Volatility tool so lets try that out.
+Now that we have the exe we can run it through a malware analysis program. Lets use [Virus Total](www.virustotal.com) a free online virus analyzer.  The site seems to have determined it to be **Poisonivy** or some variant.
+
+In the interest of keeping these posts digestible, I'll stick to five questions per post. We'll pick up with question six in the next post.

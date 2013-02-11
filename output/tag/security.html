@@ -31,8 +31,85 @@
 
                             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="../grr-con-2012-dfir-challenge-part-one-draft.html">GRR Con 2012 DFIR Challenge Part One (draft)</a></h1> 
+                    <h1 class="entry-title"><a href="../gss-con-2012-dfir-challenge-part-two.html">GSS Con 2012 DFIR Challenge Part Two</a></h1> 
                     <footer class="post-info">
+        <abbr class="published" title="2012-01-26T00:00:00">
+                Thu 26 January 2012
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/leigh.html">Leigh</a>
+        </address>
+        <p>In <a href="../category/security.html">Security</a>. </p>
+<p>tags: <a href="../tag/security.html">Security</a><a href="../tag/dfir.html">DFIR</a><a href="../tag/wireshark.html">Wireshark</a></p>
+</footer><!-- /.post-info --><p>Lets jump straight in an pick up where we left off with question six.</p>
+<p><strong>Question 6. What is the mutex the backdoor is using?</strong></p>
+<p>First of all, what is a mutex? If you have had any computer science or programming experience you may have heard about a mutex. Mutex stands for mutual exclusion and in the context of malware or executables in general it is a mechanism for ensuring that only one version of the program can be running at once.</p>
+<p>Since the entire point of doing this challenge was to learn about the volatility framework lets attempt to use that to solve this question.  The docs for <a href="https://code.google.com/p/volatility/wiki/CommandReference22">Volatility</a> are quite well written, doing a quick find on the page for 'mutex' points us in the direction of the 'handles' command and the 'mutantscan' command.</p>
+<p>Running the command:</p>
+<div class="codehilite"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">mutantscan</span> <span class="o">--</span><span class="n">silent</span>
+</pre></div>
+
+
+<p>This shows up a number of mutants which is going to be hard to sift through. I could google the name of each one to figure out where it came from.  Lets try the other command:</p>
+<div class="codehilite"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">handles</span> <span class="o">-</span><span class="n">t</span> <span class="n">Mutant</span>
+</pre></div>
+
+
+<p>There are too many entries here to filter down as well.  But this command does provide process ID's so they key will be determining which process the malware is running in.</p>
+<p>Lets have a look at some other Volatility commands and see if we can't determine which one is hosting the malware. Browsing through the numerous commands and taking in to account the information we already know about. We do know the command and control server IP and there is a command under the networking category called 'connections'. Lets try that.</p>
+<div class="codehilite"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">connections</span>
+</pre></div>
+
+
+<p>This results in the following:</p>
+<div class="codehilite"><pre> Offset(V)  Local Address             Remote Address            Pid  
+---------- ------------------------- ------------------------- ------
+0x8201ce68 172.16.150.20:1365        172.16.150.10:139              4
+0x82018e00 172.16.150.20:1424        221.54.197.32:443           1096
+</pre></div>
+
+
+<p>This at least lets us know the process id that the malware is hiding in. Lets check out what process that is by running the 'pslist' command.</p>
+<div class="codehilite"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">pslist</span> <span class="o">|</span> <span class="n">grep</span> <span class="mi">1096</span>
+</pre></div>
+
+
+<p>It's 'explorer.exe'!! Lets use that to filter out one of the other commands to find the mutex. The -p flag will filter the handles command by process id.</p>
+<div class="codehilite"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">handles</span> <span class="o">-</span><span class="n">t</span> <span class="n">Mutant</span> <span class="o">-</span><span class="n">p</span> <span class="mi">1096</span>
+</pre></div>
+
+
+<p>This reduces our list considerably, 13 in fact. A quick google of each of these reveals that the malware is using the mutant <strong>')!VoqA.I4'</strong>. Looking over the google results, I realise I could have just googled the malware 'poison ivy' to determine this fact.  Fortunately for us we garnered a lot of new information during this process.</p>
+<p><strong>Question 7. Where is the backdoor placed on the filesystem?</strong></p>
+<p>This one sounds tricky. We have a pcap, a memory image and a file system timeline. I would say the whereabouts of the backdoor will either be in the memory image or the file system timeline.</p>
+<p>Looking through the Volatility command docs I don't see much I can use to find this, I tried memdumpand handles to no avail. Lets try the memory image. I got stuck here for a while, a grep for the swing-mechanics doc showed up nothing until I used the -i flag to make the search case insensitive. Looking below this entry I noticed something strange a file called svchosts.exe. </p>
+<p>After staring at the pslists and psscans for a while this stuck out because the file listed in all those process commands is called 'svchost.exe', in fact googling for 'svchosts.exe' refusing to show results for anything but 'svchost'. What confirms it for sure though is the 'Entry Type' column of the compromised.timeline. It reads 'm..b' which means that the file was both born and modified at this time, a little strange for what is a windows system process which should have been born when the OS was installed.</p>
+<p>After this I see a lot of network related utilities being used which does seem odd. Finally after this a directory called 'c:/WINDOWS/system32/systems' is created and a total of four .exe files are created and added to this directory.</p>
+<p>Hopefully this is enough to answer question 7.</p>
+<p><strong>Question 8. What process name and process id is the backdoor running in?</strong></p>
+<p>Luckily we found this out earlier when determining the mutex.  We used the Volatility tool to uncover this and the answer is 'explorer.exe' and 1096.</p>
+<p><strong>Question 9. What additional tools do you believe were placed on the machine?</strong></p>
+<p>I believe the answer to this I determined in question 7. The addintional tools were 'g.exe', 'p.exe', 'r.exe' and 'sysmon.exe'.  To determine exactly what these tools do would require further analysis my hunch is copies of the malware itself. This could be confirmed using hashes but we need a way to get the files.</p>
+<p><strong>Question 10. What directory was created to place the newly dropped tools?</strong></p>
+<p>We also found this our earlier, it is 'c:/WINDOWS/system32/systems'</p>
+<p>Well we have made it to the half way point, stay tuned for the next installment.</p>                </article>
+                            </aside><!-- /#featured -->
+                            <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+                                                
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="../grr-con-2012-dfir-challenge-part-one.html" rel="bookmark"
+                           title="Permalink to GRR Con 2012 DFIR Challenge Part One">GRR Con 2012 DFIR Challenge Part One</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
         <abbr class="published" title="2012-01-25T00:00:00">
                 Wed 25 January 2012
         </abbr>
@@ -42,59 +119,15 @@
         </address>
         <p>In <a href="../category/security.html">Security</a>. </p>
 <p>tags: <a href="../tag/security.html">Security</a><a href="../tag/dfir.html">DFIR</a></p>
-</footer><!-- /.post-info --><p>DFIR I hear you say? What on earth is it I hear you say? </p>
-<p>DFIR stands for 'Digital Forensics and Incident Response'. It is a subset of the IT Security discipline that deals mostly with the analysis of attacks by malware or hackers after the fact. It uses a number of different techniques and tools including pcap analysis, file system log analysis and any change or impact on the target operating system and network. Although there are too many tools to name in DFIR trade, the ones I will be exploring mostly in this pose are Wireshark, Volatility, Strings and Foremost.</p>
-<p>So how did we get here?</p>
-<p>Due to my recent interest in all things security I was testing a very popular memory analysis framework called 'Volatility'.  Volatility is an open source memory analysis tool written in Python and you can check it out <a href="http://code.google.com/p/volatility">here</a>. While checking out the project I discovered some sample memory images for testing the tool.  One in particular caught my eye, the <a href="http://t.co/m0JCvrnV">GrrCon forensic challenge ISO</a>.</p>
-<p>This looked like a great opportunity not only because it had the words 'forensic challenge' in them but also because it came with a list of questions to test out your skills. I found the list of questions <a href="http://michsec.org/wp-content/uploads/2012/10/GrrCON-Questions.txt">here</a></p>
-<p>So with what little experience I have, lets get stared.</p>
-<p><strong>Question 1. How was the attack delivered?</strong></p>
-<p>Lets start with taking inventory of what we have.  On the ISO we have a memory dump, a pcap file and a file system timeline. In all likely hood the attack came in via the network some how. So the first spot to look might be the pcap file. Having said that the attack could also have been delivered via USB which may show up on the file system timeline or the memory dump. But lets just start with the pcap file.</p>
-<p>A very popular method for malware to find its one on a system is via a corrupt pdf, word doc, exe or zip file.  So my first step is to use the very useful 'strings' utility to see if these words exist in the file.  I do this by running the following command:</p>
-<div class="codehilite"><pre><span class="o">&gt;</span><span class="n">strings</span> <span class="n">out</span><span class="p">.</span><span class="n">pcap</span> <span class="o">|</span> <span class="n">grep</span> <span class="s">&quot;pdf\|doc\|exe&quot;</span>
-</pre></div>
-
-
-<p>This results in something very interesting showing up:</p>
-<div class="codehilite"><pre><span class="n">GET</span> <span class="o">/</span><span class="n">tigers</span><span class="o">/</span><span class="n">BrandonInge</span><span class="o">/</span><span class="n">Diagnostics</span><span class="o">/</span><span class="n">swing</span><span class="o">-</span><span class="n">mechanics</span><span class="p">.</span><span class="n">doc</span><span class="p">.</span><span class="n">exe</span> <span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span>
-<span class="n">exporer</span><span class="p">.</span><span class="n">exe</span>
-<span class="n">svchosts</span><span class="p">.</span><span class="n">exe</span>
-<span class="n">exporer</span><span class="p">.</span><span class="n">exe</span>
-</pre></div>
-
-
-<p>I am going to go out on a limb and say that the swing-mechanics.doc.exe looks extremely suspicious and is likely our culprit.</p>
-<p><strong>Question 2. What time was the attack delivered?</strong></p>
-<p>In order to check this we are going to fire up wireshark and apply a filter based on the http request uri above. We can do this by entering the following to the filter text box:</p>
-<div class="codehilite"><pre><span class="n">http</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">uri</span> <span class="n">contains</span> <span class="s">&quot;swing-mechanics&quot;</span>
-</pre></div>
-
-
-<p>Doing this brings up the full packet details and checking the packet arrival time results in this </p>
-<div class="codehilite"><pre><span class="n">APR</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">2012</span> <span class="mi">12</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mf">59.2562</span>
-</pre></div>
-
-
-<p><strong>Question 3. What was that name of the file that dropped the backdoor?</strong></p>
-<p>We have already uncovered this above it was swing-mechanics.doc.exe</p>
-<p><strong>Question 4. What is the IP address of the C2 server?</strong></p>
-<p>First of all, what is a C2 server? A C2 server is a command and control server that malware uses to take directives and report information. Probably the best way to determine this is to browse the pcap log in wireshark around the time that the malware was delivered.</p>
-<p>Previous to the file being delivered to the system only two IP's are mentioned 172.16.150.20 and 66.32.119.38 and after the file was delivered a new TCP connection was made to this address 221.54.197.32 This is likely our C2.</p>
-<p><strong>Question 5. What type of backdoor is installed?</strong> </p>
-<p>When I first looked at this I thought the best approach would be to pull out the exe from the pcap file using Wireshark. </p>
-<p>You can do this by right clicking on the HTTP GET for the swing-mechanics.exe and selecting follow TCP Stream. This will bring up a dialog box displaying the HTTP conversation between the clinet and the server. Since the client is the victim, we are only interested in what the server sent us (the malware itself). We can filter out the client traffic by selecting from the drop down box just the information from the server.</p>
-<p>Once this is done select 'RAW' as the format and hit 'Save As', I saved mine as 'malware.raw'. This will save just the data that came from the server i.e. swing-mechanics.exe. note: When you look at the raw data you can also see the famous 'MZ' signifying the start of a .exe file.  </p>
-<p>This file still includes a lot of the HTTP protocol information, in order to extract the exe from this file we can use a tool called 'foremost'. Foremost is a tool which was designed to extract certain file types from binary blobs of data. In this case it is an exe but it could also be something else, check the man pages for more details. To do this, run this command:</p>
-<div class="codehilite"><pre><span class="o">&gt;</span><span class="n">foremost</span> <span class="o">-</span><span class="n">t</span> <span class="n">exe</span> <span class="n">malware</span><span class="p">.</span><span class="n">raw</span>
-</pre></div>
-
-
-<p>Even though we now have the file, I still want to learn the use of the Volatility tool so lets try that out.</p>                </article>
-                                    <p class="paginator">
+</footer><!-- /.post-info -->                <p>DFIR I hear you say? What on earth is it I hear you say? </p>
+<p>DFIR stands for 'Digital Forensics and Incident Response'. It is a subset of the IT Security discipline that deals mostly with the analysis of attacks by malware or hackers after the fact. It uses a number ...</p>
+                <a class="readmore" href="../grr-con-2012-dfir-challenge-part-one.html">read more</a>
+                                </div><!-- /.entry-content -->
+            </article></li>
+                            </ol><!-- /#posts-list -->
+                            <p class="paginator">
         Page 1 / 1
     </p>
-                            </aside><!-- /#featured -->
-                                                </ol><!-- /#posts-list -->
                         </section><!-- /#content -->
                     <section id="extras" class="body">
                         <div class="blogroll">
