@@ -10,7 +10,8 @@ TIMEZONE = 'Australia/Brisbane'
 
 DEFAULT_LANG = u'en'
 
-NEWEST_FIRST_ARCHIVES(True)
+NEWEST_FIRST_ARCHIVES(False)
+DEFAULT_CATEGORY=('Articles')
 
 # Blogroll
 LINKS =  (('Hacker News', 'http://news.ycombinator.com'),)
