@@ -4,7 +4,7 @@
         <title>Leigh Appel - Security</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
-                <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Leigh Appel Atom Feed" />
+                <link href="http://www.leighappel.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Leigh Appel Atom Feed" />
                 
         <!--[if IE]>
                 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -42,7 +42,8 @@
         </address>
         <p>In <a href="../category/security.html">Security</a>. </p>
 <p>tags: <a href="../tag/security.html">Security</a><a href="../tag/dfir.html">DFIR</a><a href="../tag/wireshark.html">Wireshark</a></p>
-</footer><!-- /.post-info --><p>Lets jump straight in and pick up where we left off with question six.</p>
+</footer><!-- /.post-info --><p>Read <a href="../grr-con-2012-dfir-challenge-part-one.html">Part One</a> here</p>
+<p>Lets jump straight in and pick up where we left off with question six.</p>
 <p><strong>Question 6. What is the mutex the backdoor is using?</strong></p>
 <p>First of all, what is a mutex? If you have had any computer science or programming experience you may have heard about a mutex. Mutex stands for mutual exclusion and in the context of malware or executables in general it is a mechanism for ensuring that only one version of the program can be running at once.</p>
 <p>Since the entire point of doing this challenge was to learn about the volatility framework lets attempt to use it to solve this question.  The docs for <a href="https://code.google.com/p/volatility/wiki/CommandReference22">Volatility</a> are quite well written, doing a quick find on the page for 'mutex' points us in the direction of the 'handles' command and the 'mutantscan' command.</p>
@@ -139,9 +140,10 @@
                                 <div class="social">
                         <h2>social</h2>
                         <ul>
-                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                            <li><a href="http://www.leighappel.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
                             
                                                     <li><a href="https://github.com/abarax">GitHub</a></li>
+                                                    <li><a href="http://pinboard.in/u:abarax">Pinboard</a></li>
                                                 </ul>
                 </div><!-- /.social -->
                 </section><!-- /#extras -->

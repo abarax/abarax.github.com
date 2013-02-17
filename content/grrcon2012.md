@@ -69,3 +69,5 @@ This binary file still includes a lot of the HTTP protocol information, in order
 Now that we have the exe we can run it through a malware analysis program. Lets use [Virus Total](www.virustotal.com) a free online virus analyzer.  The site seems to have determined it to be **Poisonivy** or some variant.
 
 In the interest of keeping these posts digestible, I'll stick to five questions per post. We'll pick up with question six in the next post.
+
+Read [Part Two](|filename|grrcon2012-2.md) here

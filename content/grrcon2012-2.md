@@ -3,6 +3,7 @@ Title: GSS Con 2012 DFIR Challenge Part Two
 Category: Security
 Tags: Security, DFIR, Wireshark
 
+Read [Part One](|filename|grrcon2012.md) here
 
 Lets jump straight in and pick up where we left off with question six.
 
