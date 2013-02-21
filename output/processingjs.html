@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <title>Leigh Appel</title>
+        <title>Processing.js</title>
         <meta charset="utf-8" />
         <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
                 <link href="http://www.leighappel.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Leigh Appel Atom Feed" />
@@ -23,15 +23,29 @@
                 <h1><a href="./">Leigh Appel </a></h1>
                 <nav><ul>
                                                                                                     <li ><a href="./category/about-me.html">About Me</a></li>
-                                    <li ><a href="./category/programming.html">Programming</a></li>
+                                    <li class="active"><a href="./category/processingjs-conways-game-of-life-and-code-kata.html">Processing.js, Conway's Game of Life and Code Kata</a></li>
                                     <li ><a href="./category/security.html">Security</a></li>
                                 </ul></nav>
         </header><!-- /#banner -->
-        <ul>
-    <li><a href="./category/about-me.html">About Me</a></li>
-    <li><a href="./category/programming.html">Programming</a></li>
-    <li><a href="./category/security.html">Security</a></li>
-</ul>
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./processingjs.html" rel="bookmark"
+           title="Permalink to Processing.js">Processing.js</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <script src="static/javascript/processing.js"></script>
+
+<p>I recently revisted the processing language/framework.  I had previously used processing when workign on projecst with my Arduino.</p>
+<p>One of the latest developments is that of Processing.js which brings your processing projects to the web. So I managed to knock something up to test it out. It was also an example of a problem I used for code kata the other day, Conway's Game of Life.</p>
+<p>The code can be found on my github here. Feel free to critique, constructive criticism is always welcome, everything is an exercise in learning.</p>
+<canvas data-processing-sources="static/code/game.pde"></canvas>
+    </div><!-- /.entry-content -->
+    
+  </article>
+</section>
         <section id="extras" class="body">
                         <div class="blogroll">
                         <h2>blogroll</h2>

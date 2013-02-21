@@ -1,6 +1,6 @@
 Date: 2013-01-22
 Title: PUSH EBP  MOV EBP, ESP
-Category: Blog
+Category: About Me
 Tags: blogging
 
 # About me #

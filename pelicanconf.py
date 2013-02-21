@@ -6,11 +6,13 @@ SITENAME = u'Leigh Appel'
 SITEURL = 'http://www.leighappel.com'
 FEED_DOMAIN = SITEURL
 
+THEME = '../blog-theme'
 TIMEZONE = 'Australia/Brisbane'
+
+STATIC_PATHS = ['javascript', 'code']
 
 DEFAULT_LANG = u'en'
 
-NEWEST_FIRST_ARCHIVES(False)
 DEFAULT_CATEGORY=('Articles')
 
 # Blogroll
