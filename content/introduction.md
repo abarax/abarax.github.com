@@ -15,7 +15,7 @@ Over the last few years I have engaged in a number of extra-curricular activitie
 
 As a self-professed serial hobbyist you can expect that the topics I blog about will be as diverse as they are - hopefully, interesting.  For the most part they will involve topics related to programming, security, data analysis, algorithms, arduino and many others.
 
-Without further adieu, I thought I'd leave you with a morsel of knowledge I have picked up during the last year, that might help beginners. A topic I have been researching heavily lately is that of Information Security. Specifically, I have been researching reverse engineering, malware analysis and software exploitation.  You may have noticed the title of this introductory blog post looks a bit strange: 
+Without further ado, I thought I'd leave you with a morsel of knowledge I have picked up during the last year, that might help beginners. A topic I have been researching heavily lately is that of Information Security. Specifically, I have been researching reverse engineering, malware analysis and software exploitation.  You may have noticed the title of this introductory blog post looks a bit strange: 
 
 	push ebp
 	mov  ebp, esp
