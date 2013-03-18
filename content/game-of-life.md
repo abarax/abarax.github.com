@@ -1,5 +1,5 @@
 Date: 2013-02-18
-Title: Processing.js, Conway's Game of Life and Code Kata (draft)
+Title: Processing.js, Conway's Game of Life and Code Kata 
 Category: Programming
 Tags: processing
 
