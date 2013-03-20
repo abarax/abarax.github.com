@@ -9,7 +9,7 @@ FEED_DOMAIN = SITEURL
 THEME = '../blog-theme'
 TIMEZONE = 'Australia/Brisbane'
 
-STATIC_PATHS = ['javascript', 'code']
+STATIC_PATHS = ['javascript', 'code', 'images']
 
 DEFAULT_LANG = u'en'
 
