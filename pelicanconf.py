@@ -6,6 +6,8 @@ SITENAME = u'Leigh Appel'
 SITEURL = 'http://www.leighappel.com'
 FEED_DOMAIN = SITEURL
 
+DISQUS_SITENAME = "leighappelblog"
+
 THEME = '../blog-theme'
 TIMEZONE = 'Australia/Brisbane'
 
