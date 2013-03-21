@@ -7,6 +7,7 @@ SITEURL = 'http://www.leighappel.com'
 FEED_DOMAIN = SITEURL
 
 DISQUS_SITENAME = "leighappelblog"
+GOOGLE_ANALYTICS = "UA-39498444-1"
 
 THEME = '../blog-theme'
 TIMEZONE = 'Australia/Brisbane'
