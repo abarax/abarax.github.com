@@ -36,10 +36,10 @@
           </header>
 
     <div class="entry-content">
-      <p>On a recent episode of Security Now, Steve Gibson and Leo Laporte revisted a very popular annonymizing technology called TOR. This sparked my interest and I had to learn some of the ins-and-outs.</p>
+      <p>On a recent episode of Security Now, Steve Gibson and Leo Laporte revisited a very popular anonymizing technology called TOR. This sparked my interest and I had to learn some of the ins-and-outs.</p>
 <h1>So what is TOR?</h1>
 <p>TOR is an acronym for 'The Onion Router' which is actually a very descriptive name given how the technology works.  At a high level, TOR will route your network traffic through three nodes before reaching the destination via the last node (called an exit node).  At each node, the request is encrypted using the public key of the next node in the chain, thereby creating a layer of encryption at each level and fulfilling the onion metaphor. The same process happens in reverse with the response.</p>
-<p>Originally developed by the US navy for secure communication it has been adapted in to an open source project for the public.  The reasons for requiring annonymous internet access may not be immediately apparent to some but they can be of paramount importance for others. From protecting your web browsing on a public wifi network to sending email from countries whose governments spy on their citizens and suppress free speech.  </p>
+<p>Originally developed by the US navy for secure communication it has been adapted in to an open source project for the public.  The reasons for requiring anonymous internet access may not be immediately apparent to some but they can be of paramount importance for others. From protecting your web browsing on a public wifi network to sending email from countries whose governments spy on their citizens and suppress free speech.  </p>
 <p>One of the things that piqued my interest, which did not exist when I first encountered TOR a few years ago, is the advent of 'Hidden Services'. I wanted to see how this system worked and just how easy it was to run my own hidden service.</p>
 <p>Always looking to learn new things I actually ended up killing multiple birds with one stone in that I got the chance to play with multiple technologies I'd had my eye on for while. Lets get started. </p>
 <h1>Initial Setup</h1>
@@ -126,7 +126,7 @@
 </pre></div>
 
 
-<p>Add the follwing line:</p>
+<p>Add the following line:</p>
 <div class="codehilite"><pre><span class="k">deb</span>     <span class="s">http://deb.torproject.org/torproject.org</span> <span class="kp">&lt;DISTRIBUTION&gt;</span> <span class="kp">main</span>
 </pre></div>
 
@@ -148,7 +148,7 @@
 </pre></div>
 
 
-<p>Now that TOR is installed lets set up our hidden server. Luckily this is dead easy just edit the torrc config file like so</p>
+<p>Now that TOR is installed lets set up our hidden server. This is an amazingly simple task, just edit the torrc configuration file like so</p>
 <div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">tor</span><span class="o">/</span><span class="n">torrc</span>
 </pre></div>
 
@@ -164,10 +164,10 @@
 </pre></div>
 
 
-<p>Inside the /home/ubuntu/tor/hidden_service directory you will now find two files, a private_key file and a hostname file. Inside the *private_key file is your services' private key and is vitally important to keep safe. Inside your hosname file is the address which you can disseminate to users of your annonymous service, in my case it is <a href="mtq7eecokwr5kn22.onion">mtq7eecokwr5kn22.onion</a>. </p>
+<p>Inside the /home/ubuntu/tor/hidden_service directory you will now find two files, a private_key file and a host name file. Inside the *private_key file is your services' private key and is vitally important to keep safe. Inside your host name file is the address which you can disseminate to users of your anonymous service, in my case it is <a href="mtq7eecokwr5kn22.onion">mtq7eecokwr5kn22.onion</a>. </p>
 <p><img alt="Our service is now hidden" src="static/images/minitwit-hidden-service.png" /></p>
-<p>This address uniquely identifies our service and allows users to access the service on the TOR network just as a domain name would on the internet. Fire up your TOR client and follow my link above and you can create a completely annonymous minitwit account and post annonymous minitwits till your heart is content.</p>
-<p>Well, thats all for now, I hope some of you found it interesting.  Please feel free to give feedback.</p>
+<p>This address uniquely identifies our service and allows users to access the service on the TOR network just as a domain name would on the internet. Fire up your TOR client and follow my link above and you can create a completely anonymous minitwit account and post anonymous minitwits till your heart is content.</p>
+<p>Well, that is all for now, I hope some of you found it interesting.  Please feel free to give feedback.</p>
     </div><!-- /.entry-content -->
         <div class="comments">
       <h2>Comments !</h2>
