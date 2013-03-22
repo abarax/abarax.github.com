@@ -3,12 +3,12 @@ Title: TOR - The Onion Router Hidden Services
 Category: Security
 Tags: privacy, security, ec2
 
-On a recent episode of Security Now, Steve Gibson and Leo Laporte revisted a very popular annonymizing technology called TOR. This sparked my interest and I had to learn some of the ins-and-outs.
+On a recent episode of Security Now, Steve Gibson and Leo Laporte revisited a very popular anonymizing technology called TOR. This sparked my interest and I had to learn some of the ins-and-outs.
 
 #So what is TOR?#
 TOR is an acronym for 'The Onion Router' which is actually a very descriptive name given how the technology works.  At a high level, TOR will route your network traffic through three nodes before reaching the destination via the last node (called an exit node).  At each node, the request is encrypted using the public key of the next node in the chain, thereby creating a layer of encryption at each level and fulfilling the onion metaphor. The same process happens in reverse with the response.
 
-Originally developed by the US navy for secure communication it has been adapted in to an open source project for the public.  The reasons for requiring annonymous internet access may not be immediately apparent to some but they can be of paramount importance for others. From protecting your web browsing on a public wifi network to sending email from countries whose governments spy on their citizens and suppress free speech.  
+Originally developed by the US navy for secure communication it has been adapted in to an open source project for the public.  The reasons for requiring anonymous internet access may not be immediately apparent to some but they can be of paramount importance for others. From protecting your web browsing on a public wifi network to sending email from countries whose governments spy on their citizens and suppress free speech.  
 
 One of the things that piqued my interest, which did not exist when I first encountered TOR a few years ago, is the advent of 'Hidden Services'. I wanted to see how this system worked and just how easy it was to run my own hidden service.
 
@@ -21,7 +21,7 @@ The Flask Git repository has a few example applications you can toy with, so I c
 
 Not only is this technology used to power the titans of the tech industry but it's also great for smaller projects and prototyping. Amazon has a free tier which provides 750 hours of server uptime every month for one year and this will be the tier that i'll use for the project.
 
-Amazon has made it very simple to create a new instance, you do this on the AWS console page by following the links to the EC2 page and hitting 'Launch Instance'. Once that's done make sure you configure your security group to allow TCP traffic on post 22 for SSH access and port 80 for our web server. Just hit the 'Security Groups' link in the left column, click on the 'Security Group' that your instance is using, hit the 'Inbound' tab and apply the rules as per the screenshot below.
+Amazon has made it very simple to create a new instance, you do this on the AWS console page by following the links to the EC2 page and hitting 'Launch Instance'. Once that's done make sure you configure your security group to allow TCP traffic on post 22 for SSH access and port 80 for our web server. Just hit the 'Security Groups' link in the left column, click on the 'Security Group' that your instance is using, hit the 'Inbound' tab and apply the rules as per the screen shot below.
 
 ![AWS EC2 Security Group Settings](static/images/aws-sec-grp.png)
 
@@ -100,7 +100,7 @@ TOR recommends using their own deb repository so the process is slightly more co
 
     > vi /etc/apt/sources.list
 
-Add the follwing line:
+Add the following line:
 
     deb     http://deb.torproject.org/torproject.org <DISTRIBUTION> main
 
@@ -119,7 +119,7 @@ And install TOR:
 
     > sudo apt-get install tor
 
-Now that TOR is installed lets set up our hidden server. Luckily this is dead easy just edit the torrc config file like so
+Now that TOR is installed lets set up our hidden server. This is an amazingly simple task, just edit the torrc configuration file like so:
 
     > sudo vi /etc/tor/torrc
 
@@ -132,10 +132,10 @@ Next, just restart TOR like so:
 
     > sudo /etc/init.d/tor restart
 
-Inside the /home/ubuntu/tor/hidden_service directory you will now find two files, a private_key file and a hostname file. Inside the *private_key file is your services' private key and is vitally important to keep safe. Inside your hosname file is the address which you can disseminate to users of your annonymous service, in my case it is [mtq7eecokwr5kn22.onion](mtq7eecokwr5kn22.onion). 
+Inside the /home/ubuntu/tor/hidden_service directory you will now find two files, a private_key file and a hostname file. Inside the *private_key* file is your services' private key and is vitally important to keep safe. Inside your host name file is the address which you can disseminate to users of your anonymous service, in my case it is [mtq7eecokwr5kn22.onion](mtq7eecokwr5kn22.onion). 
 
 ![Our service is now hidden](static/images/minitwit-hidden-service.png)
 
-This address uniquely identifies our service and allows users to access the service on the TOR network just as a domain name would on the internet. Fire up your TOR client and follow my link above and you can create a completely annonymous minitwit account and post annonymous minitwits till your heart is content.
+This address uniquely identifies our service and allows users to access the service on the TOR network just as a domain name would on the internet. Fire up your TOR client and follow my link above and you can create a completely anonymous minitwit account and post anonymous minitwits till your heart is content.
 
-Well, thats all for now, I hope some of you found it interesting.  Please feel free to give feedback.
+Well, that is all for now, I hope some of you found it interesting.  Please feel free to give feedback.
