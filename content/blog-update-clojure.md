@@ -33,5 +33,7 @@ It is titled Hack and Heckle and the website is at (www.hackandheckle.com). Plea
 
 # I'm bootstrapping a start up! #
 
-The final and certainly most significant thing that has begun to develop is my joining a start up. Currently I am the backend engineer and have been using and enjoying [Django](https://www.djangoproject.com) + the very cool [Django REST Framework](http://django-rest-framework.org/) deployed to [Amazon Web Services](aws.amazon.com) I have also been helping out in the frontend for which we are using [Ember.js](emberjs.com).  Currently we arn't speaking about it in public as we are in full development but stay tuned as there may be more news to follow.  I will at least attempt to chronicle my use of the technologies.
+The final and certainly most significant thing that has begun to develop is my joining a start up.
+
+Currently I am the sole backend engineer and have been using and enjoying [Django](https://www.djangoproject.com) + the very cool [Django REST Framework](http://django-rest-framework.org/) deployed to [Amazon Web Services](aws.amazon.com) I have also been helping out in the frontend for which we are using [Ember.js](emberjs.com).  Currently we arn't speaking about it in public as we are in full development but stay tuned as there may be more news to follow.  I will at least attempt to chronicle my use of the technologies.
 

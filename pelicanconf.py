@@ -19,10 +19,12 @@ DEFAULT_LANG = u'en'
 DEFAULT_CATEGORY=('Articles')
 
 # Blogroll
-LINKS =  (('Hacker News', 'http://news.ycombinator.com'),)
+LINKS =  (('Hacker News', 'http://news.ycombinator.com'),
+            ('Hack and Heckle', 'http://hackandheckle.com'),)
 
 # Social widget
 SOCIAL = (('GitHub', 'https://github.com/abarax'),
-          ('Pinboard', 'http://pinboard.in/u:abarax'),)
+          ('Pinboard', 'http://pinboard.in/u:abarax'),
+          ('Twitter', 'https://twitter.com/abarax'),)
 
 DEFAULT_PAGINATION = 10
