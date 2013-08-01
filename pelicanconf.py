@@ -9,7 +9,7 @@ FEED_DOMAIN = SITEURL
 DISQUS_SITENAME = "leighappelblog"
 GOOGLE_ANALYTICS = "UA-39498444-1"
 
-THEME = '../blog-theme'
+THEME = "notmyidea"
 TIMEZONE = 'Australia/Brisbane'
 
 STATIC_PATHS = ['javascript', 'code', 'images']

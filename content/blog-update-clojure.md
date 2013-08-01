@@ -2,7 +2,6 @@ Date: 2013-06-17
 Title: Blog status update plus Clojure!
 Category: Programming
 Tags: programming, clojure
-status: draft
 
 
 No, the blog is not dead! I have just been really busy. This post is mostly an update on what I have been up to, as well as a little bit about some Clojure.
