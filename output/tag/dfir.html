@@ -1,63 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="utf-8">
         <title>Leigh Appel - DFIR</title>
-        <link rel="stylesheet" href="http://www.leighappel.com/theme/css/main.css">
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
                 
         <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie.css"/>
+                <script src="../js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie6.css"/><![endif]-->
+
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="http://www.leighappel.com/">Leigh Appel </a></h1>
+                <h1><a href="../">Leigh Appel </a></h1>
                 <nav><ul>
-                                                                                    <li ><a href="http://www.leighappel.com/category/about-me.html">About Me</a></li>
-                                    <li ><a href="http://www.leighappel.com/category/programming.html">Programming</a></li>
-                                    <li ><a href="http://www.leighappel.com/category/security.html">Security</a></li>
-                                                </ul></nav>
+                                                                                                    <li ><a href="../category/about-me.html">About Me</a></li>
+                                    <li ><a href="../category/programming.html">Programming</a></li>
+                                    <li ><a href="../category/security.html">Security</a></li>
+                                </ul></nav>
         </header><!-- /#banner -->
                 
             
 
                             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://www.leighappel.com/gss-con-2012-dfir-challenge-part-two.html">GSS Con 2012 DFIR Challenge Part Two</a></h1> 
+                    <h1 class="entry-title"><a href="../gss-con-2012-dfir-challenge-part-two.html">GSS Con 2012 DFIR Challenge Part Two</a></h1> 
                     <footer class="post-info">
         <abbr class="published" title="2013-01-26T00:00:00">
                 Sat 26 January 2013
         </abbr>
 
                 <address class="vcard author">
-                By <a class="url fn" href="http://www.leighappel.com/author/leigh-appel.html">Leigh Appel</a>
+                By <a class="url fn" href="../author/leigh-appel.html">Leigh Appel</a>
         </address>
-        <p>In <a href="http://www.leighappel.com/category/security.html">Security</a>. </p>
-<p>tags: <a href="http://www.leighappel.com/tag/security.html">Security</a><a href="http://www.leighappel.com/tag/dfir.html">DFIR</a><a href="http://www.leighappel.com/tag/wireshark.html">Wireshark</a></p>
-</footer><!-- /.post-info --><p>Read <a href="http://www.leighappel.com/grr-con-2012-dfir-challenge-part-one.html">Part One</a> here</p>
+        <p>In <a href="../category/security.html">Security</a>. </p>
+<p>tags: <a href="../tag/security.html">Security</a><a href="../tag/dfir.html">DFIR</a><a href="../tag/wireshark.html">Wireshark</a></p>
+</footer><!-- /.post-info --><p>Read <a href="../grr-con-2012-dfir-challenge-part-one.html">Part One</a> here</p>
 <p>Lets jump straight in and pick up where we left off with question six.</p>
 <p><strong>Question 6. What is the mutex the backdoor is using?</strong></p>
 <p>First of all, what is a mutex? If you have had any computer science or programming experience you may have heard about a mutex. Mutex stands for mutual exclusion and in the context of malware or executables in general it is a mechanism for ensuring that only one version of the program can be running at once.</p>
 <p>Since the entire point of doing this challenge was to learn about the volatility framework lets attempt to use it to solve this question.  The docs for <a href="https://code.google.com/p/volatility/wiki/CommandReference22">Volatility</a> are quite well written, doing a quick find on the page for 'mutex' points us in the direction of the 'handles' command and the 'mutantscan' command.</p>
 <p>Running the command:</p>
-<div class="highlight"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">mutantscan</span> <span class="o">--</span><span class="n">silent</span>
+<div class="codehilite"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">mutantscan</span> <span class="o">--</span><span class="n">silent</span>
 </pre></div>
 
 
 <p>This shows up a number of mutants which is going to be hard to sift through. I could google the name of each one to figure out where it came from.  Lets try the other command:</p>
-<div class="highlight"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">handles</span> <span class="o">-</span><span class="n">t</span> <span class="n">Mutant</span>
+<div class="codehilite"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">handles</span> <span class="o">-</span><span class="n">t</span> <span class="n">Mutant</span>
 </pre></div>
 
 
 <p>There are too many entries here to filter down as well.  But this command does provide process ID's so the key will be determining which process the malware is running in.</p>
 <p>Lets have a look at some other Volatility commands and see if we can't determine which one is hosting the malware. Browsing through the numerous commands and taking in to account the information we already know about. We do know the command and control server IP and there is a command under the networking category called 'connections'. Lets try that.</p>
-<div class="highlight"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">connections</span>
+<div class="codehilite"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">connections</span>
 </pre></div>
 
 
 <p>This results in the following:</p>
-<div class="highlight"><pre> Offset(V)  Local Address             Remote Address            Pid  
+<div class="codehilite"><pre> Offset(V)  Local Address             Remote Address            Pid  
 ---------- ------------------------- ------------------------- ------
 0x8201ce68 172.16.150.20:1365        172.16.150.10:139              4
 0x82018e00 172.16.150.20:1424        221.54.197.32:443           1096
@@ -65,12 +72,12 @@
 
 
 <p>This at least lets us know the process id that the malware is hiding in. Lets check out what process that is by running the 'pslist' command.</p>
-<div class="highlight"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">pslist</span> <span class="o">|</span> <span class="n">grep</span> <span class="mi">1096</span>
+<div class="codehilite"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">pslist</span> <span class="o">|</span> <span class="n">grep</span> <span class="mi">1096</span>
 </pre></div>
 
 
 <p>It's 'explorer.exe'!! Lets use that to filter one of the other commands to find the mutex. The -p flag will filter the handles command by process id.</p>
-<div class="highlight"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">handles</span> <span class="o">-</span><span class="n">t</span> <span class="n">Mutant</span> <span class="o">-</span><span class="n">p</span> <span class="mi">1096</span>
+<div class="codehilite"><pre><span class="o">&gt;</span><span class="n">python</span> <span class="n">vol</span><span class="p">.</span><span class="n">py</span> <span class="o">-</span><span class="n">f</span> <span class="n">memdump</span><span class="p">.</span><span class="n">img</span> <span class="n">handles</span> <span class="o">-</span><span class="n">t</span> <span class="n">Mutant</span> <span class="o">-</span><span class="n">p</span> <span class="mi">1096</span>
 </pre></div>
 
 
@@ -87,7 +94,7 @@
 <p>I believe the answer to this I determined in question 7. The additional tools were 'g.exe', 'p.exe', 'r.exe' and 'sysmon.exe'.  To determine exactly what these tools do would require further analysis but my hunch is that they are copies of the malware itself or utilities that it uses.. This could be confirmed using hashes but we need a way to get the files.</p>
 <p><strong>Question 10. What directory was created to place the newly dropped tools?</strong></p>
 <p>We also found this our earlier, it is 'c:/WINDOWS/system32/systems'</p>
-<p>Well we have made it to the half way point, stay tuned for the next installment.</p><p>There are <a href="http://www.leighappel.com/gss-con-2012-dfir-challenge-part-two.html#disqus_thread">comments</a>.</p>                </article>
+<p>Well we have made it to the half way point, stay tuned for the next installment.</p><p>There are <a href="../gss-con-2012-dfir-challenge-part-two.html#disqus_thread">comments</a>.</p>                </article>
                             </aside><!-- /#featured -->
                             <section id="content" class="body">
                     <h1>Other articles</h1>
@@ -98,7 +105,7 @@
                  
                         <li><article class="hentry">    
                 <header>
-                    <h1><a href="http://www.leighappel.com/grr-con-2012-dfir-challenge-part-one.html" rel="bookmark"
+                    <h1><a href="../grr-con-2012-dfir-challenge-part-one.html" rel="bookmark"
                            title="Permalink to GRR Con 2012 DFIR Challenge Part One">GRR Con 2012 DFIR Challenge Part One</a></h1>
                 </header>
                 
@@ -109,14 +116,14 @@
         </abbr>
 
                 <address class="vcard author">
-                By <a class="url fn" href="http://www.leighappel.com/author/leigh-appel.html">Leigh Appel</a>
+                By <a class="url fn" href="../author/leigh-appel.html">Leigh Appel</a>
         </address>
-        <p>In <a href="http://www.leighappel.com/category/security.html">Security</a>. </p>
-<p>tags: <a href="http://www.leighappel.com/tag/security.html">Security</a><a href="http://www.leighappel.com/tag/dfir.html">DFIR</a></p>
+        <p>In <a href="../category/security.html">Security</a>. </p>
+<p>tags: <a href="../tag/security.html">Security</a><a href="../tag/dfir.html">DFIR</a></p>
 </footer><!-- /.post-info -->                <p>DFIR I hear you say? What on earth is it I hear you say? </p>
 <p>DFIR stands for 'Digital Forensics and Incident Response'. It is a subset of the IT Security discipline that deals mostly with the analysis of attacks by malware or hackers after the fact. It uses a number ...</p>
-                <a class="readmore" href="http://www.leighappel.com/grr-con-2012-dfir-challenge-part-one.html">read more</a>
-                <p>There are <a href="http://www.leighappel.com/grr-con-2012-dfir-challenge-part-one.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+                <a class="readmore" href="../grr-con-2012-dfir-challenge-part-one.html">read more</a>
+                <p>There are <a href="../grr-con-2012-dfir-challenge-part-one.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
                             </ol><!-- /#posts-list -->
                             <p class="paginator">

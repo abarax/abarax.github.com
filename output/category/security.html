@@ -1,40 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="utf-8">
         <title>Leigh Appel - Security</title>
-        <link rel="stylesheet" href="http://www.leighappel.com/theme/css/main.css">
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
                 
         <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie.css"/>
+                <script src="../js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie6.css"/><![endif]-->
+
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
-                <h1><a href="http://www.leighappel.com/">Leigh Appel </a></h1>
+                <h1><a href="../">Leigh Appel </a></h1>
                 <nav><ul>
-                                                                                    <li ><a href="http://www.leighappel.com/category/about-me.html">About Me</a></li>
-                                    <li ><a href="http://www.leighappel.com/category/programming.html">Programming</a></li>
-                                    <li class="active"><a href="http://www.leighappel.com/category/security.html">Security</a></li>
-                                                </ul></nav>
+                                                                                                    <li ><a href="../category/about-me.html">About Me</a></li>
+                                    <li ><a href="../category/programming.html">Programming</a></li>
+                                    <li class="active"><a href="../category/security.html">Security</a></li>
+                                </ul></nav>
         </header><!-- /#banner -->
                 
             
 
                             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://www.leighappel.com/tor-the-onion-router-hidden-services.html">TOR - The Onion Router Hidden Services</a></h1> 
+                    <h1 class="entry-title"><a href="../tor-the-onion-router-hidden-services.html">TOR - The Onion Router Hidden Services</a></h1> 
                     <footer class="post-info">
         <abbr class="published" title="2013-03-16T00:00:00">
                 Sat 16 March 2013
         </abbr>
 
                 <address class="vcard author">
-                By <a class="url fn" href="http://www.leighappel.com/author/leigh-appel.html">Leigh Appel</a>
+                By <a class="url fn" href="../author/leigh-appel.html">Leigh Appel</a>
         </address>
-        <p>In <a href="http://www.leighappel.com/category/security.html">Security</a>. </p>
-<p>tags: <a href="http://www.leighappel.com/tag/privacy.html">privacy</a><a href="http://www.leighappel.com/tag/security.html">security</a><a href="http://www.leighappel.com/tag/ec2.html">ec2</a></p>
+        <p>In <a href="../category/security.html">Security</a>. </p>
+<p>tags: <a href="../tag/privacy.html">privacy</a><a href="../tag/security.html">security</a><a href="../tag/ec2.html">ec2</a></p>
 </footer><!-- /.post-info --><p>On a recent episode of Security Now, Steve Gibson and Leo Laporte revisited a very popular anonymizing technology called TOR. This sparked my interest and I had to learn some of the ins-and-outs.</p>
 <h1>So what is TOR?</h1>
 <p>TOR is an acronym for 'The Onion Router' which is actually a very descriptive name given how the technology works.  At a high level, TOR will route your network traffic through three nodes before reaching the destination via the last node (called an exit node).  At each node, the request is encrypted using the public key of the next node in the chain, thereby creating a layer of encryption at each level and fulfilling the onion metaphor. The same process happens in reverse with the response.</p>
@@ -50,24 +57,24 @@
 <h1>The Service</h1>
 <p>Next up, lets get our Twitter clone set up. If you wish to follow my guide directly then read this section otherwise if you already have a configured server and web-app then you can skip this section and move on to the TOR configuration section.</p>
 <p>This will install the great python package manager pip:</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">pip</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">pip</span>
 </pre></div>
 
 
 <p>Next install our required python packages:</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">Flask</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">Flask</span>
 </pre></div>
 
 
 <p>Now we'll get our app on the server. (I forked the Flask Git repository)</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">mkdir</span> <span class="o">~/</span><span class="n">dev</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">mkdir</span> <span class="o">~/</span><span class="n">dev</span>
 <span class="o">&gt;</span> <span class="n">cd</span> <span class="o">~/</span><span class="n">dev</span>
 <span class="o">&gt;</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="o">:</span><span class="c1">//github.com/abarax/flask.git</span>
 </pre></div>
 
 
 <p>And start it up</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">cd</span> <span class="n">flask</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">minitwit</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">cd</span> <span class="n">flask</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">minitwit</span>
 <span class="o">&gt;</span> <span class="n">python</span> <span class="n">minitwit</span><span class="p">.</span><span class="n">py</span> <span class="o">&amp;</span>
 </pre></div>
 
@@ -77,12 +84,12 @@
 <h1>Web Server Config</h1>
 <p>Out next step is to set up a web server on our EC2 instance. I will be using Apache 2 but you can use any flavour you like. Adding a web server in front of our python application gives us more flexibility in how users will access the service.</p>
 <p>First, lets install the required applications:</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">apache2</span> <span class="n">libapache2</span><span class="o">-</span><span class="n">mod</span><span class="o">-</span><span class="n">wsgi</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">apache2</span> <span class="n">libapache2</span><span class="o">-</span><span class="n">mod</span><span class="o">-</span><span class="n">wsgi</span>
 </pre></div>
 
 
 <p>Now we will create our WSGI config file for apache to talk to our Flask app.  To do this, create a file in our minitwit directory called minitwit.py and add the following text:</p>
-<div class="highlight"><pre><span class="n">import</span> <span class="n">sys</span>
+<div class="codehilite"><pre><span class="n">import</span> <span class="n">sys</span>
 <span class="n">sys</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="err">&#39;</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">flask</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">minitwit</span><span class="err">&#39;</span><span class="p">)</span>
 
 <span class="n">from</span> <span class="n">minitwit</span> <span class="n">import</span> <span class="n">app</span> <span class="n">as</span> <span class="n">application</span>
@@ -90,13 +97,13 @@
 
 
 <p>Next we need to configure apache. So create a new site file, lets call ours minitwit.com</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apache2</span><span class="o">/</span><span class="n">sites</span><span class="o">-</span><span class="n">available</span>
 <span class="o">&gt;</span> <span class="n">touch</span> <span class="n">minitwit</span><span class="p">.</span><span class="n">com</span>
 </pre></div>
 
 
 <p>Inside that file we are going to create our VirtualHost like so:</p>
-<div class="highlight"><pre><span class="nt">&lt;VirtualHost</span> <span class="err">*:80</span><span class="nt">&gt;</span>
+<div class="codehilite"><pre><span class="nt">&lt;VirtualHost</span> <span class="err">*:80</span><span class="nt">&gt;</span>
      WSGIDaemonProcess app
  WSGIScriptAlias / /home/ubuntu/dev/flask/examples/minitwit/minitwit.wsgi
 
@@ -111,7 +118,7 @@
 
 
 <p>Now just load up your config and restart apache:</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">a2dissite</span> <span class="k">default</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">a2dissite</span> <span class="k">default</span>
 <span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">a2ensite</span> <span class="n">minitwit</span><span class="p">.</span><span class="n">com</span>
 <span class="o">&gt;</span> <span class="n">sudo</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">apache2</span> <span class="n">restart</span>
 </pre></div>
@@ -121,52 +128,52 @@
 <h1>TOR Hidden Service</h1>
 <p>Now we get to the interesting part, lets install TOR and expose our twitter client as a hidden service on the TOR network.</p>
 <p>TOR recommends using their own deb repository so the process is slightly more complicated in that you need to add their repo to your sources.list file.</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="n">list</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="n">list</span>
 </pre></div>
 
 
 <p>Add the following line:</p>
-<div class="highlight"><pre><span class="k">deb</span>     <span class="s">http://deb.torproject.org/torproject.org</span> <span class="kp">&lt;DISTRIBUTION&gt;</span> <span class="kp">main</span>
+<div class="codehilite"><pre><span class="k">deb</span>     <span class="s">http://deb.torproject.org/torproject.org</span> <span class="kp">&lt;DISTRIBUTION&gt;</span> <span class="kp">main</span>
 </pre></div>
 
 
 <p>Where distribution is equal to your EC2 instances distro.</p>
 <p>Next add the gpg keys for signing packages</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">gpg</span> <span class="o">--</span><span class="n">keyserver</span> <span class="n">keys</span><span class="p">.</span><span class="n">gnupg</span><span class="p">.</span><span class="n">net</span> <span class="o">--</span><span class="n">recv</span> <span class="mi">886</span><span class="n">DDD89</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">gpg</span> <span class="o">--</span><span class="n">keyserver</span> <span class="n">keys</span><span class="p">.</span><span class="n">gnupg</span><span class="p">.</span><span class="n">net</span> <span class="o">--</span><span class="n">recv</span> <span class="mi">886</span><span class="n">DDD89</span>
 <span class="o">&gt;</span> <span class="n">gpg</span> <span class="o">--</span><span class="n">export</span> <span class="n">A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span>
 </pre></div>
 
 
 <p>finally run this command:</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span>
 </pre></div>
 
 
 <p>And install TOR:</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">tor</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">tor</span>
 </pre></div>
 
 
 <p>Now that TOR is installed lets set up our hidden server. This is an amazingly simple task, just edit the torrc configuration file like so:</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">tor</span><span class="o">/</span><span class="n">torrc</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">tor</span><span class="o">/</span><span class="n">torrc</span>
 </pre></div>
 
 
 <p>Add the following to the hidden services location:</p>
-<div class="highlight"><pre><span class="n">HiddenServiceDir</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">tor</span><span class="o">/</span><span class="n">hidden_service</span><span class="o">/</span>
+<div class="codehilite"><pre><span class="n">HiddenServiceDir</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">/</span><span class="n">tor</span><span class="o">/</span><span class="n">hidden_service</span><span class="o">/</span>
 <span class="n">HiddenServicePort</span> <span class="mi">80</span> <span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">80</span>
 </pre></div>
 
 
 <p>Next, just restart TOR like so:</p>
-<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">tor</span> <span class="n">restart</span>
+<div class="codehilite"><pre><span class="o">&gt;</span> <span class="n">sudo</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">tor</span> <span class="n">restart</span>
 </pre></div>
 
 
 <p>Inside the /home/ubuntu/tor/hidden_service directory you will now find two files, a private_key file and a hostname file. Inside the <em>private_key</em> file is your services' private key and is vitally important to keep safe. Inside your host name file is the address which you can disseminate to users of your anonymous service, in my case it is <a href="mtq7eecokwr5kn22.onion">mtq7eecokwr5kn22.onion</a>. </p>
 <p><img alt="Our service is now hidden" src="static/images/minitwit-hidden-service.png" /></p>
 <p>This address uniquely identifies our service and allows users to access the service on the TOR network just as a domain name would on the internet. Fire up your TOR client and follow my link above and you can create a completely anonymous minitwit account and post anonymous minitwits till your heart is content.</p>
-<p>Well, that is all for now, I hope some of you found it interesting.  Please feel free to give feedback.</p><p>There are <a href="http://www.leighappel.com/tor-the-onion-router-hidden-services.html#disqus_thread">comments</a>.</p>                </article>
+<p>Well, that is all for now, I hope some of you found it interesting.  Please feel free to give feedback.</p><p>There are <a href="../tor-the-onion-router-hidden-services.html#disqus_thread">comments</a>.</p>                </article>
                             </aside><!-- /#featured -->
                             <section id="content" class="body">
                     <h1>Other articles</h1>
@@ -177,7 +184,7 @@
                  
                         <li><article class="hentry">    
                 <header>
-                    <h1><a href="http://www.leighappel.com/gss-con-2012-dfir-challenge-part-two.html" rel="bookmark"
+                    <h1><a href="../gss-con-2012-dfir-challenge-part-two.html" rel="bookmark"
                            title="Permalink to GSS Con 2012 DFIR Challenge Part Two">GSS Con 2012 DFIR Challenge Part Two</a></h1>
                 </header>
                 
@@ -188,23 +195,23 @@
         </abbr>
 
                 <address class="vcard author">
-                By <a class="url fn" href="http://www.leighappel.com/author/leigh-appel.html">Leigh Appel</a>
+                By <a class="url fn" href="../author/leigh-appel.html">Leigh Appel</a>
         </address>
-        <p>In <a href="http://www.leighappel.com/category/security.html">Security</a>. </p>
-<p>tags: <a href="http://www.leighappel.com/tag/security.html">Security</a><a href="http://www.leighappel.com/tag/dfir.html">DFIR</a><a href="http://www.leighappel.com/tag/wireshark.html">Wireshark</a></p>
-</footer><!-- /.post-info -->                <p>Read <a href="http://www.leighappel.com/grr-con-2012-dfir-challenge-part-one.html">Part One</a> here</p>
+        <p>In <a href="../category/security.html">Security</a>. </p>
+<p>tags: <a href="../tag/security.html">Security</a><a href="../tag/dfir.html">DFIR</a><a href="../tag/wireshark.html">Wireshark</a></p>
+</footer><!-- /.post-info -->                <p>Read <a href="../grr-con-2012-dfir-challenge-part-one.html">Part One</a> here</p>
 <p>Lets jump straight in and pick up where we left off with question six.</p>
 <p><strong>Question 6. What is the mutex the backdoor is using?</strong></p>
 <p>First of all, what is a mutex? If you have had any computer science or programming experience you may have heard about ...</p>
-                <a class="readmore" href="http://www.leighappel.com/gss-con-2012-dfir-challenge-part-two.html">read more</a>
-                <p>There are <a href="http://www.leighappel.com/gss-con-2012-dfir-challenge-part-two.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+                <a class="readmore" href="../gss-con-2012-dfir-challenge-part-two.html">read more</a>
+                <p>There are <a href="../gss-con-2012-dfir-challenge-part-two.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
                             
 
                  
                         <li><article class="hentry">    
                 <header>
-                    <h1><a href="http://www.leighappel.com/grr-con-2012-dfir-challenge-part-one.html" rel="bookmark"
+                    <h1><a href="../grr-con-2012-dfir-challenge-part-one.html" rel="bookmark"
                            title="Permalink to GRR Con 2012 DFIR Challenge Part One">GRR Con 2012 DFIR Challenge Part One</a></h1>
                 </header>
                 
@@ -215,14 +222,14 @@
         </abbr>
 
                 <address class="vcard author">
-                By <a class="url fn" href="http://www.leighappel.com/author/leigh-appel.html">Leigh Appel</a>
+                By <a class="url fn" href="../author/leigh-appel.html">Leigh Appel</a>
         </address>
-        <p>In <a href="http://www.leighappel.com/category/security.html">Security</a>. </p>
-<p>tags: <a href="http://www.leighappel.com/tag/security.html">Security</a><a href="http://www.leighappel.com/tag/dfir.html">DFIR</a></p>
+        <p>In <a href="../category/security.html">Security</a>. </p>
+<p>tags: <a href="../tag/security.html">Security</a><a href="../tag/dfir.html">DFIR</a></p>
 </footer><!-- /.post-info -->                <p>DFIR I hear you say? What on earth is it I hear you say? </p>
 <p>DFIR stands for 'Digital Forensics and Incident Response'. It is a subset of the IT Security discipline that deals mostly with the analysis of attacks by malware or hackers after the fact. It uses a number ...</p>
-                <a class="readmore" href="http://www.leighappel.com/grr-con-2012-dfir-challenge-part-one.html">read more</a>
-                <p>There are <a href="http://www.leighappel.com/grr-con-2012-dfir-challenge-part-one.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+                <a class="readmore" href="../grr-con-2012-dfir-challenge-part-one.html">read more</a>
+                <p>There are <a href="../grr-con-2012-dfir-challenge-part-one.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
                             </ol><!-- /#posts-list -->
                             <p class="paginator">
