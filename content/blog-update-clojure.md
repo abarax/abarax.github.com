@@ -1,5 +1,5 @@
 Date: 2013-06-17
-Title: Blog status update plus Clojure!
+Title: Blog Status Update!
 Category: Programming
 Tags: programming, clojure
 
