@@ -4,7 +4,7 @@ Category: Programming
 Tags: programming, clojure
 
 
-No, the blog is not dead! I have just been really busy. This post is mostly an update on what I have been up to, as well as a little bit about some Clojure.
+No, the blog is not dead! I have just been really busy. This post is mostly an update on what I have been up to.
 
 So what have I been up to? Well, apart from all the regular duties a life entails, it's three things:
 
@@ -30,9 +30,9 @@ So this one is exciting, myself along with two other programmers based in Brisba
 
 It is titled Hack and Heckle and the website is at (www.hackandheckle.com). Please check us out and have a listen, we need feedback and questions! We are also hoping to interview some local tech notables, so if you have any suggestions let us know.
 
-# I'm bootstrapping a start up! #
+# I'm bootstrapping a side project! #
 
-The final and certainly most significant thing that has begun to develop is my joining a start up.
+The final and certainly most significant thing that has begun to develop is the beginning of a side project.
 
 Currently I am the sole backend engineer and have been using and enjoying [Django](https://www.djangoproject.com) + the very cool [Django REST Framework](http://django-rest-framework.org/) deployed to [Amazon Web Services](aws.amazon.com) I have also been helping out in the frontend for which we are using [Ember.js](emberjs.com).  Currently we arn't speaking about it in public as we are in full development but stay tuned as there may be more news to follow.  I will at least attempt to chronicle my use of the technologies.
 
